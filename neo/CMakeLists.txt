@@ -52,7 +52,7 @@ option(CORE			"Build the core" ON)
 option(BASE			"Build the base game code" ON)
 option(D3XP			"Build the d3xp game code" ON)
 if(MSVC)
-	option(TOOLS		"Build the tools game code (Visual Studio+SDL2/SDL3 only)" OFF)
+	option(TOOLS		"Build the tools game code (Visual Studio+SDL2/SDL3 only)" ON)
 endif()
 option(DEDICATED	"Build the dedicated server" OFF)
 option(ONATIVE		"Optimize for the host CPU" OFF)
@@ -1323,6 +1323,14 @@ endif()
 		${SDLx_LIBRARY}
 		${sys_libs}
 	)
+
+	#yangfan
+	if(WIN32)
+		# VCPKG_TARGET_TRIPLET 通常是 x64-windows
+		target_include_directories(${DHEWM3BINARY} PRIVATE 
+			"${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include"
+		)
+	endif()
 
 	if(NOT APPLE AND NOT WIN32)
 		install(TARGETS ${DHEWM3BINARY}
